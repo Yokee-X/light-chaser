@@ -53,6 +53,7 @@ const DesignerCanvas = memo(observer(() => {
                 </GroupSelectable>
             </DesignerContainer>
             <ContextMenu/>
+           {/* 热键注入 */}
             <HotKey handlerMapping={hotkeyConfigs}/>
             <SearchLayer/>
         </Suspense>

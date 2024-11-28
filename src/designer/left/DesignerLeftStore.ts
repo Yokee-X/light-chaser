@@ -6,7 +6,7 @@ export interface ILeftMenu {
     name: string,
     key: string,
 }
-
+//设计页面左侧菜单栏数据
 class DesignerLeftStore {
     constructor() {
         makeObservable(this, {
@@ -15,11 +15,11 @@ class DesignerLeftStore {
         });
     }
 
-    menu: string = 'components';
+    menu: string = 'components';//当前menu
 
     setMenu = (menu: string) => this.menu = menu;
 
-    designerLeftRef: HTMLElement | null = null;
+    designerLeftRef: HTMLElement | null = null;//左侧菜单栏dom
 
     setDesignerLeftRef = (ref: HTMLElement | null) => this.designerLeftRef = ref;
 

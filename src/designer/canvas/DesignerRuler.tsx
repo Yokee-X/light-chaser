@@ -35,6 +35,7 @@ interface DesignerRulerProps {
  * 则鼠标指针在当前缩放系数下的位置为：rulerP = startP + (mouOffset / scale)
  * 鼠标移动后的标尺起始位置为：scrollPos = startP + (mouOffset / scale)
  */
+/** 画布缩放标尺组件 */
 const DesignerRuler = memo((props: RulerProps & DesignerRulerProps) => {
     const [, setCount] = useState(0);
     const rulerXRef = useRef<Ruler | null>(null);

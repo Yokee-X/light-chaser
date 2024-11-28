@@ -33,7 +33,7 @@ export interface DesignerMovableState {
     throttleDragRotate: number;
     keepRatio: boolean;
 }
-
+/** 拖动组件 */
 class DesignerMovable extends React.Component<DesignerMovableProps, DesignerMovableState> {
     movableRef = React.createRef<Moveable>();
 
@@ -366,7 +366,7 @@ export default observer(DesignerMovable);
 export interface DimensionViewableProps {
     dimensionViewable?: boolean;
 }
-
+/** 选中元素时左上角显示元素尺寸信息 */
 export const DimensionViewable = {
     name: "dimensionViewable",
     props: {

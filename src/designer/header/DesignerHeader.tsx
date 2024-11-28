@@ -49,7 +49,7 @@ const centerItems: Array<IHeaderItem> = [
     }
 ];
 
-const leftItems: Array<IHeaderItem> = [
+const RightItems: Array<IHeaderItem> = [
     {
         icon: <AfferentFour theme="filled" style={{marginTop: 2}} strokeLinecap="square"/>,
         name: '导入',
@@ -106,12 +106,16 @@ const Header: React.FC = observer(() => {
                         {buildHeaderItemUI(centerItems)}
                     </div>
                     <div className={'header-right'}>
-                        {buildHeaderItemUI(leftItems)}
+                        {buildHeaderItemUI(RightItems)}
                     </div>
-                    {canvasHdStore.canvasVisible && <CanvasHdConfigImpl/>}
+                    {/* 画布配置 */}
+                    {canvasHdStore.canvasVisible && <CanvasHdConfigImpl/>} 
+                    {/* 项目配置 无明显入口 ctrl+1入口 快捷键中提示 */}
                     {projectHdStore.projectVisible && <ProjectHdItemImpl/>}
+                    {/* 主题配置 */}
                     {themeHdStore.themeVisible && <ThemeHdItemImpl/>}
-                    {bluePrintHdStore.bluePrintVisible && <BluePrintHdImpl/>}
+                    {/* 蓝图渲染 */}
+                    {bluePrintHdStore.bluePrintVisible && <BluePrintHdImpl/>} 
                 </div>
             </>
         );

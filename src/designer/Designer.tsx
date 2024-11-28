@@ -47,7 +47,7 @@ const clickHandler = (event: MouseEvent) => {
         });
     }
 }
-
+// 右键菜单事件
 const contextMenuHandler = (event: MouseEvent) => {
     event.preventDefault();
     const {mouseDownTime, mouseUpTime, setPosition, updateVisible} = contextMenuStore;

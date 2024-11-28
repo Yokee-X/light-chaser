@@ -32,7 +32,7 @@ export function setControlPointLineColor(lock: boolean) {
 export interface DesignerSelectableProps {
     children?: React.ReactNode;
 }
-
+/** 选择组件， 允许使用鼠标选择区域中的元素 */
 class DesignerSelectable extends Component<DesignerSelectableProps> {
     selectorRef = React.createRef<Selecto>();
 

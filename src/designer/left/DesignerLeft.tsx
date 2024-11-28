@@ -18,7 +18,9 @@ export const DesignerLeft = observer(() => {
 
     return (
         <div className={'designer-left'} ref={leftDomRef}>
+            {/* 左菜单 */}
             <LeftMenus/>
+            {/* 菜单子项 */}
             {menu === 'components' && <ComponentList/>}
             {menu === 'layer-list' && <LayerList/>}
             {menu === 'source-list' && <SourceList/>}

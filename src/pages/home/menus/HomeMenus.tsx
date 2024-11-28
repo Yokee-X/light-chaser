@@ -7,21 +7,21 @@ import {MenuItemType} from "antd/es/menu/interface";
 
 const getMenus = () => {
     const baseMenus: MenuItemType[] = [
-        {
-            key: 'server',
-            icon: <NetworkDrive size={16}/>,
-            label: '在线项目'
-        },
+        // {
+        //     key: 'server',
+        //     icon: <NetworkDrive size={16}/>,
+        //     label: '在线项目'
+        // },
         {
             key: 'local',
             icon: <LocalPin size={16}/>,
             label: '本地项目'
         },
-        {
-            key: 'datasource',
-            icon: <Data size={16}/>,
-            label: '数据库管理'
-        },
+        // {
+        //     key: 'datasource',
+        //     icon: <Data size={16}/>,
+        //     label: '数据库管理'
+        // },
         {
             key: 'more',
             icon: <System size={16}/>,
@@ -30,7 +30,7 @@ const getMenus = () => {
     ]
     return baseMenus;
 }
-
+// 主页侧边栏
 export const HomeMenus = memo(() => {
 
     const navigate = useNavigate();

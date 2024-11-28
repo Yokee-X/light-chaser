@@ -21,7 +21,7 @@ class Loading extends Component<LoadingProps> {
             fontWeight: '300'
         }
         return (
-            <div style={style}>加 载 中 . . . . . .</div>
+            <div style={style}>L o a d i n g . . . . . .</div>
         );
     }
 }

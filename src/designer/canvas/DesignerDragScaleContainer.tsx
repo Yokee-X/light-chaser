@@ -9,7 +9,7 @@ export interface DesignerDragScaleContainerProps {
     children?: React.ReactNode;
     onDoubleClick?: (e: React.MouseEvent<HTMLDivElement, MouseEvent>) => void;
 }
-
+/** 实际画布缩放容器 */
 const DesignerDragScaleContainer = memo(observer((props: DesignerDragScaleContainerProps) => {
     const {children, onDoubleClick} = props;
     const containerRef = React.useRef<HTMLDivElement>(null);
@@ -51,6 +51,7 @@ const DesignerDragScaleContainer = memo(observer((props: DesignerDragScaleContai
                  backgroundColor: '#434343',
                  position: 'relative'
              }}>
+            {/* 实际页面 */}
             <div className={'designer-ds-content lc-drag-scale-provider'}
                  id={'designer-ds-content'}
                  ref={contentRef}
