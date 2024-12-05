@@ -11,7 +11,9 @@ import layerManager from "../../designer/manager/LayerManager.ts";
 export interface ComponentContainerProps {
     layer: ILayerItem;
 }
-
+/**
+ * 组件容器，用于创建组件实例，并挂载到画布上
+ */
 const ComponentContainer = memo((props: ComponentContainerProps) => {
     const {layer} = props;
     const ref = useRef(null);

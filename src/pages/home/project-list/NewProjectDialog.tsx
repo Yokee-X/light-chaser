@@ -43,16 +43,16 @@ export const NewProjectDialog: React.FC<AddNewScreenDialogProps> = (props) => {
         <Modal title={'新建大屏'} open={visible} className={'add-new-screen-dialog'} onCancel={onCancel} footer={[
             <Button type={"primary"} onClick={onOk}>创建</Button>,
             <Button onClick={onCancel}>取消</Button>
-        ]}>
+        ]} destroyOnClose>
             <div className={'lc-add-new-screen'}>
                 <Grid gridGap={'15px'} columns={2}>
                     <Input label={'名称'} defaultValue={projectInfo.name}
                            onChange={(name: string | number) => projectInfo.name = name as string}/>
                     <Input label={'描述'}
                            onChange={(description: string | number) => projectInfo.des = description as string}/>
-                    <NumberInput label={'宽度'} min={300} defaultValue={projectInfo.width}
+                    <NumberInput label={'宽度'} min={500} defaultValue={projectInfo.width} max={7680}
                                  onChange={(width: string | number) => projectInfo.width = Number(width)}/>
-                    <NumberInput label={'高度'} min={300} defaultValue={projectInfo.height}
+                    <NumberInput label={'高度'} min={300} defaultValue={projectInfo.height} max={7680}
                                  onChange={(height: number | string) => projectInfo.height = Number(height)}/>
                 </Grid>
             </div>

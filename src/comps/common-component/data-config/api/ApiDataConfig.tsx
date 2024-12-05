@@ -121,7 +121,7 @@ export function ApiDataConfig(props: ApiDataConfigProps) {
                         key: 'filter',
                         type: 'code-editor',
                         config: {
-                            height: 200,
+                            height: 100,
                             language: 'javascript'
                         },
                         value: dataRef.current?.filter || "function filter(data){\n\n\n\treturn data\n}",
@@ -140,7 +140,7 @@ export function ApiDataConfig(props: ApiDataConfigProps) {
                         type: 'code-editor',
                         config: {
                             readonly: true,
-                            height: 160,
+                            height: 150,
                         },
                         reRender: true,
                         value: apiTestResRef.current,
@@ -203,7 +203,7 @@ export function ApiDataConfig(props: ApiDataConfigProps) {
                     res = typeof func === 'function' ? func(res) : res;
                 }
                 apiTestResRef.current = JSON.stringify(res, null, 2);
-                controller.update({data: {apiData: dataRef.current, staticData: res}}, {reRender: false});
+                controller.update({data: {apiData: dataRef.current, staticData: res}}, {reRender: true});
                 controller.changeData(res);
             } else {
                 apiTestResRef.current = JSON.stringify({msg: '请求错误'}, null, 2);

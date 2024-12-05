@@ -56,6 +56,7 @@ export default class BPLayerNodeController extends AbstractBPNodeController<Laye
         const {layerConfigs} = layerManager;
         const compLayout = layerConfigs[nodeId];
         const {definitionMap} = editorDesignerLoader;
+        console.log(definitionMap[compLayout.type!].getEventList(),'getEventList........')
         const output = definitionMap[compLayout.type!].getEventList().map((item) => {
             return {
                 id: nodeId + ':' + item.id + ':' + AnchorPointType.OUTPUT,

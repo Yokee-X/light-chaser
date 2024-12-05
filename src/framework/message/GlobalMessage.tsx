@@ -18,7 +18,6 @@ export {globalMessage};
 export default function GlobalMessage() {
     const [messageApi, contextHolder] = message.useMessage();
 
-    console.log('messageApi', messageApi,contextHolder);
     useEffect(() => {
         globalMessage.setMessageApi(messageApi);
         return () => {

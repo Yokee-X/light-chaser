@@ -1,5 +1,7 @@
 import AbstractController from "../../framework/core/AbstractController";
 import {AbstractDefinition, ActionInfo, EventInfo} from "../../framework/core/AbstractDefinition";
+import AbstractDesignerController from "../../framework/core/AbstractDesignerController";
+import { AntdBaseDesignerController } from "./AntdBaseDesignerController";
 
 
 export abstract class AntdCommonDefinition<C extends AbstractController = AbstractController, P = any> extends AbstractDefinition<C, P> {
@@ -34,7 +36,16 @@ export abstract class AntdCommonDefinition<C extends AbstractController = Abstra
     }
 
     getActionList(): Array<ActionInfo> {
-        return super.getActionList();
+        return [
+            ...super.getActionList(),
+            {
+                name:"刷新数据",
+                id:"refreshData",
+                handler: (controller: AbstractDesignerController, params?: any) => {
+                    controller.loadComponentData();
+                }
+            }
+        ]
     }
 }
 

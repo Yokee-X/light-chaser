@@ -2,6 +2,9 @@ import {action, makeObservable, observable} from "mobx";
 import AbstractManager from "../../../manager/core/AbstractManager.ts";
 import {ThemeItemType} from "../../../DesignerType.ts";
 
+/**
+ * 主题配置
+ */
 class ThemeManager extends AbstractManager<Array<ThemeItemType>> {
     constructor() {
         super();

@@ -29,6 +29,7 @@ export class SchemaPathNode {
 }
 
 /**
+ * 根据schema结构，生成UI
  * 特殊场景的操作全交给使用方，向外提供Util方法更新schema结构
  */
 export class LCGUI extends React.Component<LCGUIProps> {

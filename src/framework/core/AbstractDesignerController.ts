@@ -108,6 +108,7 @@ abstract class AbstractDesignerController<I = any, C = any> extends AbstractCont
     public loadComponentData(): void {
         //预览模式
         const {data} = this.config! as ComponentBaseProps;
+        console.log(data,'loadComponentData')
         if (!data) return;
         const {sourceType} = data!;
         switch (sourceType) {

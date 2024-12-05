@@ -2,6 +2,9 @@ import {action, makeObservable, observable, runInAction, toJS} from "mobx";
 import AbstractManager from "../../../manager/core/AbstractManager.ts";
 import {CanvasConfig} from "../../../DesignerType.ts";
 
+/**
+ * 画布配置
+ */
 class CanvasManager extends AbstractManager<CanvasConfig> {
 
     constructor() {
