@@ -20,18 +20,18 @@ export interface BaseSelectComponentSuspendStyle {
     colorBgElevated?: string;
     optionFontSize?: number;
 }
-export interface BaseSelectComponentGlobalStyle {
-    globalVariable?: string;
-}
 
 export interface BaseSelectComponentStyle {
     base?: BaseSelectComponentBaseStyle;
     suspend?: BaseSelectComponentSuspendStyle;
-    global?: BaseSelectComponentGlobalStyle;
 }
 
 export interface BaseSelectComponentProps extends ComponentBaseProps {
     style?: BaseSelectComponentStyle;
+    labelField?: string; // 配置label字段
+    valueField?: string; // 配置value字段
+    globalVariable?: string; //配置全局变量名
+    loading?: boolean; //加载状态
 }
 
 export interface BaseSelectComponentRef {
@@ -50,14 +50,10 @@ const BaseSelectComponent = React.forwardRef((props: BaseSelectComponentProps, r
     }));
 
     const handleSelect = (value: any, option: BaseOptionType | Array<BaseOptionType>) => {
-        console.log("select", eventHandlerMap.current);
-        if ("selectChange" in eventHandlerMap.current) {
-            eventHandlerMap.current["selectChange"]();
+        if ("hasData" in eventHandlerMap.current) {
+            eventHandlerMap.current["hasData"](value);
         }
     };
-    useEffect(() => {
-        console.log(config, "config?.data");
-    }, [config]);
     const data = config?.data?.staticData;
     const { style } = config;
     return (
@@ -77,7 +73,9 @@ const BaseSelectComponent = React.forwardRef((props: BaseSelectComponentProps, r
                 },
             }}
         >
-            <Select className={"base-select"} style={{ height: "100%", width: "100%", ...style?.base }} options={data} onSelect={handleSelect}></Select>
+            <Select className={"base-select"} loading={config?.loading} style={{ height: "100%", width: "100%", ...style?.base }} options={data} 
+            // defaultValue={data?.[0]?.[config?.valueField!]} 
+            fieldNames={{ label: config?.labelField, value: config?.valueField }} onSelect={handleSelect}></Select>
         </ConfigProvider>
     );
 });

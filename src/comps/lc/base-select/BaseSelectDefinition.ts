@@ -4,14 +4,12 @@ import { MenuInfo } from "../../../designer/right/MenuType.ts";
 import baseSelectImg from "./base-select.png";
 import { BaseSelectController } from "./BaseSelectController.ts";
 import { BaseSelectComponentProps } from "./BaseSelectComponent.tsx";
-import { BaseSelectConfig } from "./BaseSelectConfig.tsx";
 import React from "react";
 import AbstractDesignerDefinition from "../../../framework/core/AbstractDesignerDefinition.ts";
+import { getDefaultMenuList } from "../../../designer/right/util.ts";
 
-const BaseInfo = React.lazy(() => import("../../common-component/base-info/BaseInfo.tsx"));
-const ThemeConfig = React.lazy(() => import("../../common-component/theme-config/ThemeConfig.tsx"));
-const AnimationConfig = React.lazy(() => import("../../common-component/animation-config/AnimationConfig.tsx"));
-const FilterConfig = React.lazy(() => import("../../common-component/filter-config/FilterConfig.tsx"));
+const BaseSelectConfig = React.lazy(() => import("./BaseSelectConfig").then(module=>({default:module.BaseSelectConfig})))
+const BaseSelectFieldMapping = React.lazy(() => import("./BaseSelectConfig").then(module=>({default:module.BaseSelectFieldMapping})))
 
 export default class BaseSelectDefinition extends AbstractDesignerDefinition<BaseSelectController, BaseSelectComponentProps> {
     getBaseInfo(): BaseInfoType {
@@ -44,23 +42,27 @@ export default class BaseSelectDefinition extends AbstractDesignerDefinition<Bas
                 name: "基础下拉框",
                 type: "BaseSelect",
             },
+            labelField: "label",
+            valueField: "value",
+            loading:false,
+            globalVariable:"",
             style: {
                 base: {
-                    textColor:"#FFFFFF",
+                    textColor: "#FFFFFF",
                     background: "#1d78b926",
-                    fontSize:14,
+                    fontSize: 14,
                     borderWidth: 2,
                     borderColor: "#43a0e2",
                     // borderStyle: "solid",
                     borderRadius: 6,
                 },
-                suspend:{
-                    optionSelectedBg:"#0da5dc23",
-                    optionSelectedColor:"#FFFFFF",
-                    optionActiveBg:"#43a0e2",
-                    colorBgElevated:"#30587e39",
-                    optionFontSize:14,
-                }
+                suspend: {
+                    optionSelectedBg: "#0da5dc23",
+                    optionSelectedColor: "#FFFFFF",
+                    optionActiveBg: "#43a0e2",
+                    colorBgElevated: "#30587e39",
+                    optionFontSize: 14,
+                },
             },
             data: {
                 sourceType: "static",
@@ -79,22 +81,22 @@ export default class BaseSelectDefinition extends AbstractDesignerDefinition<Bas
     }
 
     getMenuList(): Array<MenuInfo> {
-        return super.getMenuList().filter((item: MenuInfo) => item.key !== "theme");
+        return getDefaultMenuList().filter((item: MenuInfo) => item.key !== "theme");
     }
 
     getMenuToConfigContentMap(): MenuToConfigMappingType {
-        const menuMapping = super.getMenuToConfigContentMap();
-        menuMapping["base"] = BaseInfo;
-        menuMapping["style"] = BaseSelectConfig;
-        menuMapping["theme"] = ThemeConfig;
-        return menuMapping;
+        return {
+            ...super.getMenuToConfigContentMap(),
+            style: BaseSelectConfig,
+            mapping: BaseSelectFieldMapping,
+        };
     }
 
     getEventList(): EventInfo[] {
         return [
             ...super.getEventList(),
             {
-                id: "selectChange",
+                id: "hasData",
                 name: "数据选中时",
             },
         ];

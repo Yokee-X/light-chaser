@@ -21,14 +21,20 @@ export class BaseSelectController extends AbstractDesignerController<BaseSelectC
         this.instance = null;
         this.config = null;
     }
-
+    changeData(data:any){
+        this.instance?.updateConfig(ObjectUtil.merge(this.config, {loading:this.loading,data:{staticData:data}}))
+    }
+    changeLoading(loading:boolean){
+        this.instance?.updateConfig(ObjectUtil.merge(this.config, {loading}))
+    }
     getConfig(): BaseSelectComponentProps | null {
         return this.config;
     }
-
+    getLoading(): boolean {
+        return this.loading;
+    }
     update(config: BaseSelectComponentProps, upOp?: UpdateOptions | undefined): void {
         this.config = ObjectUtil.merge(this.config, config);
-        console.log('调用update',upOp)
         upOp = upOp || {reRender: true};
         if (upOp.reRender)
             this.instance?.updateConfig(this.config!);
@@ -41,9 +47,10 @@ export class BaseSelectController extends AbstractDesignerController<BaseSelectC
 
     registerEvent() {
         const nodeId = this.config?.base?.id!;
-        console.log("registerEvent", nodeId);
         this.instance?.setEventHandler({
-            selectChange: () => BPExecutor.triggerComponentEvent(nodeId!, "selectChange", this.config),
+            hasData: (value:any) => {
+                BPExecutor.triggerComponentEvent(nodeId!, "hasData", {...this.config,value})
+            },
         })
     }
 }

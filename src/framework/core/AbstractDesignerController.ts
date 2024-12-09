@@ -1,6 +1,6 @@
-import {APIConfig, IDatabase, IFilterConfigType, ThemeItemType} from "../../designer/DesignerType";
+import { APIConfig, IDatabase, IFilterConfigType, ThemeItemType } from "../../designer/DesignerType";
 import AbstractController from "./AbstractController";
-import {ComponentBaseProps} from "../../comps/common-component/CommonTypes.ts";
+import { ComponentBaseProps } from "../../comps/common-component/CommonTypes.ts";
 import FetchUtil from "../../utils/FetchUtil.ts";
 import Base64Util from "../../utils/Base64Util.ts";
 
@@ -15,71 +15,75 @@ abstract class AbstractDesignerController<I = any, C = any> extends AbstractCont
     protected lastReqState: boolean = true;
     //异常提示信息dom元素
     private errMsgDom: HTMLElement | null = null;
-
+    //Loading状态
+    protected loading: boolean = false;
     /**
      * 更新组件数据,且必须触发组件的重新渲染
      * @param data
      */
     // eslint-disable-next-line @typescript-eslint/no-unused-vars
-    public changeData(data: any): void {
-    }
-
+    public changeData(data: any): void {}
+    /**
+     * 更新Loading状态
+     * @param loading
+     */
+    public changeLoading(loading: boolean): any {}
     /**
      * 用于注册组件事件，在组件接入蓝图事件系统时使用
      */
-    public registerEvent(): void {
-    }
-
+    public registerEvent(): void {}
 
     private doApi = (config: APIConfig) => {
-        const {url, method, params, header, frequency = 5, filter, autoFlush} = config;
+        const { url, method, params, header, frequency = 5, filter, autoFlush } = config;
         const request = () => {
-            FetchUtil.doRequestNativeResult(url!, method!, header, params).then((res) => {
-                if (res) {
-                    if (!this.lastReqState) {
-                        this.lastReqState = true;
-                        this.errMsgDom?.remove();
-                        this.errMsgDom = null;
+            this.changeLoading(true);
+            FetchUtil.doRequestNativeResult(url!, method!, header, params)
+                .then(res => {
+                    if (res) {
+                        if (!this.lastReqState) {
+                            this.lastReqState = true;
+                            this.errMsgDom?.remove();
+                            this.errMsgDom = null;
+                        }
+                        if (filter && filter !== "") {
+                            const func = eval(`(${filter})`);
+                            res = typeof func === "function" ? func(res) : res;
+                        }
+                        this.changeData(res);
+                    } else {
+                        this.lastReqState = false;
+                        //请求失败，在原有容器的基础上添加异常提示信息的dom元素（此处直接操作dom元素，不适用react的api进行组件的反复挂载和卸载）
+                        if (!this.errMsgDom) {
+                            this.errMsgDom = document.createElement("div");
+                            this.errMsgDom.classList.add("view-error-message");
+                            this.errMsgDom.innerText = "数据加载失败...";
+                            this.container!.appendChild(this.errMsgDom);
+                        }
                     }
-                    if (filter && filter !== '') {
-                        const func = eval(`(${filter})`);
-                        res = typeof func === 'function' ? func(res) : res;
-                    }
-                    this.changeData(res);
-                } else {
-                    this.lastReqState = false;
-                    //请求失败，在原有容器的基础上添加异常提示信息的dom元素（此处直接操作dom元素，不适用react的api进行组件的反复挂载和卸载）
-                    if (!this.errMsgDom) {
-                        this.errMsgDom = document.createElement("div");
-                        this.errMsgDom.classList.add("view-error-message");
-                        this.errMsgDom.innerText = "数据加载失败...";
-                        this.container!.appendChild(this.errMsgDom);
-                    }
-                }
-            });
-        }
-        if (autoFlush)
-            this.interval = setInterval(() => request(), frequency * 1000);
-        else
-            request();
-    }
+                })
+                .finally(() => {
+                    this.changeLoading(false);
+                });
+        };
+        if (autoFlush) this.interval = setInterval(() => request(), frequency * 1000);
+        else request();
+    };
 
     private doDatabase = (config: IDatabase) => {
-        const {sql, targetDb, filter, frequency, autoFlush} = config;
+        const { sql, targetDb, filter, frequency, autoFlush } = config;
         const request = () => {
-            if (!sql || sql === '')
-                return;
-            FetchUtil.post(`/api/db/executor/execute`, {id: targetDb, sql: Base64Util.toBase64(sql)}).then(res => {
-                let {data} = res;
+            if (!sql || sql === "") return;
+            FetchUtil.post(`/api/db/executor/execute`, { id: targetDb, sql: Base64Util.toBase64(sql) }).then(res => {
+                let { data } = res;
                 if (res.code === 200) {
                     if (!this.lastReqState) {
                         this.lastReqState = true;
                         this.errMsgDom?.remove();
                         this.errMsgDom = null;
                     }
-                    if (filter && filter !== '') {
+                    if (filter && filter !== "") {
                         const func = eval(`(${filter})`);
-                        data = typeof func === 'function' ? func(data) : data;
+                        data = typeof func === "function" ? func(data) : data;
                     }
                     this.changeData(data);
                 } else {
@@ -93,32 +97,38 @@ abstract class AbstractDesignerController<I = any, C = any> extends AbstractCont
                     }
                 }
             });
-        }
+        };
 
-        if (autoFlush)
-            this.interval = setInterval(() => request(), (frequency || 5) * 1000);
-        else
-            request();
-    }
+        if (autoFlush) this.interval = setInterval(() => request(), (frequency || 5) * 1000);
+        else request();
+    };
 
     /**
      * 加载组件数据，用于在预览（展示）模式下渲染完组件后根据当前组件的数据配置自动加载并更新组件数组。
      * 注：若自定义组件有自己的数据加载方式，则需要覆写此方法
      */
-    public loadComponentData(): void {
+    public loadComponentData(params?:any): void {
         //预览模式
-        const {data} = this.config! as ComponentBaseProps;
-        console.log(data,'loadComponentData')
+        const { data } = this.config! as ComponentBaseProps;
+        console.log(params, "loadComponentData");
         if (!data) return;
-        const {sourceType} = data!;
+        const { sourceType } = data!;
         switch (sourceType) {
             case "static":
                 //静态数据不做处理，组件首次渲染时默认读取静态数据
                 break;
             case "api":
-                this.doApi(data?.apiData ?? {});
+                data.apiData = data?.apiData ?? {}
+                if(params?.globalVariable){
+                    data.apiData.params = {
+                        ...data.apiData?.params,
+                        [params.globalVariable]: params.value
+                    }
+                }
+                console.log(data.apiData.params, "data.apiData")
+                this.doApi(data.apiData);
                 break;
-            case 'database':
+            case "database":
                 this.doDatabase(data?.database ?? {});
                 break;
         }
@@ -129,21 +139,17 @@ abstract class AbstractDesignerController<I = any, C = any> extends AbstractCont
      * @param newTheme 新主题
      */
     // eslint-disable-next-line @typescript-eslint/no-unused-vars
-    public updateTheme(newTheme: ThemeItemType): void {
-    }
+    public updateTheme(newTheme: ThemeItemType): void {}
 
     public updateFilter(filter: IFilterConfigType): void {
-        if (this.config && (this.config as ComponentBaseProps).filter)
-            (this.config as ComponentBaseProps)!.filter = filter;
-        if (!this.container)
-            return;
+        if (this.config && (this.config as ComponentBaseProps).filter) (this.config as ComponentBaseProps)!.filter = filter;
+        if (!this.container) return;
         if (filter?.enable) {
-            this.container.style.filter = `blur(${filter.blur}px) brightness(${filter.brightness}) contrast(${filter.contrast}) opacity(${filter.opacity}) saturate(${filter.saturate}) hue-rotate(${filter.hueRotate}deg)`
+            this.container.style.filter = `blur(${filter.blur}px) brightness(${filter.brightness}) contrast(${filter.contrast}) opacity(${filter.opacity}) saturate(${filter.saturate}) hue-rotate(${filter.hueRotate}deg)`;
         } else {
-            this.container.style.filter = 'none';
+            this.container.style.filter = "none";
         }
     }
-
 }
 
 export default AbstractDesignerController;

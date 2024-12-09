@@ -3,12 +3,13 @@ import { FieldChangeData, LCGUI } from "../../../json-schema/LCGUI";
 import { Control } from "../../../json-schema/SchemaTypes";
 import { BaseSelectController } from "./BaseSelectController";
 import { ConfigType } from "../../../designer/right/ConfigContent";
+import AntdCommonUtil from "../../antd-common/AntdCommonUtil";
 
 /**
  * Config用于配置组件的样式
  */
 export const BaseSelectConfig: React.FC<ConfigType<BaseSelectController>> = ({ controller }) => {
-    const { base, suspend,global } = controller.getConfig()?.style ?? {};
+    const { base, suspend } = controller.getConfig()?.style ?? {};
 
     const onFieldChange = (fieldChangeData: FieldChangeData) => {
         const { dataFragment } = fieldChangeData;
@@ -164,20 +165,6 @@ export const BaseSelectConfig: React.FC<ConfigType<BaseSelectController>> = ({ c
                     },
                 ],
             },
-            {
-                key: "global",
-                label: "全局",
-                type: "accordion",
-                children: [
-                    {
-                        key: "globalVariable",
-                        type: "input",
-                        label: "全局变量",
-                        value: global?.globalVariable,
-                        config: {},
-                    },
-                ],
-            },
         ],
     };
 
@@ -187,3 +174,45 @@ export const BaseSelectConfig: React.FC<ConfigType<BaseSelectController>> = ({ c
         </div>
     );
 };
+export const BaseSelectFieldMapping: React.FC<ConfigType> = (props) => {
+    const {controller} = props;
+    const config = controller.config;
+    const options = AntdCommonUtil.getDataFieldOptions(controller);
+    const schema: Control = {
+        // key: 'style',
+        type: 'grid',
+        children: [
+            {
+                key: 'labelField',
+                type: 'select',
+                label: 'X字段',
+                value: config.labelField,
+                config: {
+                    options,
+                }
+            },
+            {
+                key: 'valueField',
+                type: 'select',
+                label: 'Y字段',
+                value: config.valueField,
+                config: {
+                    options,
+                }
+            },
+            {
+                key: "globalVariable",
+                type: "input",
+                label: "全局变量",
+                value: config?.globalVariable,
+                config: {},
+            },
+        ]
+    }
+
+    const onFieldChange = (fieldChangeData: FieldChangeData) => {
+        controller.update(fieldChangeData.dataFragment);
+    }
+
+    return <div style={{padding: 10}}><LCGUI schema={schema} onFieldChange={onFieldChange}/></div>
+}
