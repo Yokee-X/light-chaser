@@ -18,6 +18,7 @@
     "@scena/react-ruler": "^0.17.1",
     "antd": "^5.20.0",
     "countup.js": "^2.8.0",
+    "dayjs": "^1.11.13",
     "flv.js": "^1.6.2",
     "hls.js": "^1.5.11",
     "localforage": "^1.10.0",

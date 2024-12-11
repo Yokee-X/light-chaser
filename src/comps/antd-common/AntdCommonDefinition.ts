@@ -42,6 +42,7 @@ export abstract class AntdCommonDefinition<C extends AbstractController = Abstra
                 name:"刷新数据",
                 id:"refreshData",
                 handler: (controller: AbstractDesignerController, params?: any) => {
+                   console.log(params,'刷新数据params-------')
                     controller.loadComponentData(params);
                 }
             }

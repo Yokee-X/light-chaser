@@ -23,6 +23,7 @@ export default class BPLogicalProcessNodeController extends AbstractBPNodeContro
 
     execute(executeInfo: ExecuteInfoType, executor: BPExecutor, params: any): void {
         const {nodeId} = executeInfo;
+        console.log('执行逻辑处理节点1111111', this.handler)
         if (!this.handler) {
             if (!this.config?.handler)
                 return;
@@ -36,6 +37,7 @@ export default class BPLogicalProcessNodeController extends AbstractBPNodeContro
         }
         const apId = nodeId + ':afterExecute:' + AnchorPointType.OUTPUT;
         const newParams = this.handler!(params) || params;
+        console.log('执行逻辑处理节点222',newParams)
         if (newParams instanceof Promise) {
             newParams.then(params => {
                 executor.execute(apId, executor, params);

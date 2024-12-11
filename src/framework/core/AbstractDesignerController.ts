@@ -3,6 +3,7 @@ import AbstractController from "./AbstractController";
 import { ComponentBaseProps } from "../../comps/common-component/CommonTypes.ts";
 import FetchUtil from "../../utils/FetchUtil.ts";
 import Base64Util from "../../utils/Base64Util.ts";
+import { isArray, isObject, isString } from "lodash";
 
 /**
  * AbstractDesignerController继承自AbstractController，在泛型的定义和约束上和AbstractController完全保持一致。
@@ -107,10 +108,9 @@ abstract class AbstractDesignerController<I = any, C = any> extends AbstractCont
      * 加载组件数据，用于在预览（展示）模式下渲染完组件后根据当前组件的数据配置自动加载并更新组件数组。
      * 注：若自定义组件有自己的数据加载方式，则需要覆写此方法
      */
-    public loadComponentData(params?:any): void {
+    public loadComponentData(params?: any): void {
         //预览模式
         const { data } = this.config! as ComponentBaseProps;
-        console.log(params, "loadComponentData");
         if (!data) return;
         const { sourceType } = data!;
         switch (sourceType) {
@@ -118,14 +118,24 @@ abstract class AbstractDesignerController<I = any, C = any> extends AbstractCont
                 //静态数据不做处理，组件首次渲染时默认读取静态数据
                 break;
             case "api":
-                data.apiData = data?.apiData ?? {}
-                if(params?.globalVariable){
+                data.apiData = data?.apiData ?? {};
+                if (isString(params?.globalVariable)) {
                     data.apiData.params = {
                         ...data.apiData?.params,
-                        [params.globalVariable]: params.value
-                    }
+                        [params.globalVariable]: params.value,
+                    };
                 }
-                console.log(data.apiData.params, "data.apiData")
+                if (isObject(params?.globalVariable)) {
+                    let obj: Record<string, any> = {}
+                    Object.keys(params.globalVariable).map((item)=>{
+                        obj[params.globalVariable[item]] = params.value[item]
+                    })
+                    
+                    data.apiData.params = {
+                        ...data.apiData?.params,
+                        ...obj,
+                    };
+                }
                 this.doApi(data.apiData);
                 break;
             case "database":

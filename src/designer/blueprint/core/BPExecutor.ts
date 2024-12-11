@@ -52,6 +52,7 @@ export default class BPExecutor {
             const [nodeId, apId, anchorType] = nextAnchorId.split(":");
             const {bpNodeControllerInsMap} = bluePrintManager;
             const nodeController = bpNodeControllerInsMap[nodeId!];
+            console.log(nodeController,'nodeController----')
             nodeController && nodeController.execute({
                 nodeId, apId,
                 anchorType: parseInt(anchorType) as AnchorPointType
