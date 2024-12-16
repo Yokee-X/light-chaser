@@ -63,16 +63,17 @@ const ComponentContainer = memo((props: ComponentContainerProps) => {
                         //在组件完全渲染完毕后进行数据的加载和事件的注册
                         if ((mode as DesignerMode) === DesignerMode.VIEW) {
                             controller.registerEvent();
-                            
-                            //TODO 判定有无关联加载数据
-                            controller.loadComponentData();
-                            //所有组件都加载完毕之后。 触发bpExecutor的loaded事件
-                            if (++window.LC_ENV.createdController! === window.LC_ENV.totalController) {
+                             //所有组件都加载完毕之后。 触发bpExecutor的loaded事件
+                             if (++window.LC_ENV.createdController! === window.LC_ENV.totalController) {
+                                console.log(layerManager.compController,'layerManager.compController')
                                 layerManager.compController &&
                                     Object.values(layerManager.compController).forEach(controller => {
+                                        console.log(BPExecutor,'触发BPExecutor')
                                         BPExecutor?.triggerComponentEvent(controller.config.base.id, "loaded", controller.config);
                                     });
                             }
+                            //TODO 判定有无关联加载数据
+                            controller.loadComponentData();
                         }
                         //设置组件滤镜效果（todo 考虑是否应该在此处设置？）
                         controller.updateFilter(controller.getConfig()?.filter);

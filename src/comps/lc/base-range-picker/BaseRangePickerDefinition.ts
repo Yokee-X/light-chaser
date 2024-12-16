@@ -84,7 +84,7 @@ export default class BaseRangePickerDefinition extends AbstractDesignerDefinitio
     }
 
     getMenuList(): Array<MenuInfo> {
-        return getDefaultMenuList().filter((item: MenuInfo) => item.key !== "theme");
+        return getDefaultMenuList().filter((item: MenuInfo) => item.key !== "theme" && item.key !== "data");
     }
 
     getMenuToConfigContentMap(): MenuToConfigMappingType {

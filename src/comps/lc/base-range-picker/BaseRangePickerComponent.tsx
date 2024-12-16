@@ -66,7 +66,6 @@ const BaseRangePickerComponent = React.forwardRef((props: BaseRangePickerCompone
 
     const { style } = config;
     const dateChange = (date: [Dayjs | null, Dayjs | null] | null, dateString: string[]) => {
-        console.log("onChange", dateString);
         if ("hasData" in eventHandlerMap.current) {
             // config.globalVariable = {};
             eventHandlerMap.current.hasData({

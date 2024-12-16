@@ -27,9 +27,6 @@ export class BaseRangePickerController extends AbstractDesignerController<BaseRa
     getConfig(): BaseRangePickerComponentProps | null {
         return this.config;
     }
-    getLoading(): boolean {
-        return this.loading;
-    }
     update(config: BaseRangePickerComponentProps, upOp?: UpdateOptions | undefined): void {
         this.config = ObjectUtil.merge(this.config, config);
         console.log('update config:', config)

@@ -30,9 +30,6 @@ export class BaseDatePickerController extends AbstractDesignerController<BaseDat
     getConfig(): BaseDatePickerComponentProps | null {
         return this.config;
     }
-    getLoading(): boolean {
-        return this.loading;
-    }
     update(config: BaseDatePickerComponentProps, upOp?: UpdateOptions | undefined): void {
         this.config = ObjectUtil.merge(this.config, config);
         upOp = upOp || {reRender: true};

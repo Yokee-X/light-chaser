@@ -44,6 +44,7 @@ export default class BPExecutor {
         if (anchorInfoArr.length !== 3)
             return;
         const {bpAPMap} = bluePrintManager;
+        console.log(bluePrintManager.bpNodeControllerInsMap,apId,'bpNodeControllerInsMap')
         const nextAnchorIds = bpAPMap[apId];
         if (!nextAnchorIds)
             return;
@@ -52,7 +53,6 @@ export default class BPExecutor {
             const [nodeId, apId, anchorType] = nextAnchorId.split(":");
             const {bpNodeControllerInsMap} = bluePrintManager;
             const nodeController = bpNodeControllerInsMap[nodeId!];
-            console.log(nodeController,'nodeController----')
             nodeController && nodeController.execute({
                 nodeId, apId,
                 anchorType: parseInt(anchorType) as AnchorPointType

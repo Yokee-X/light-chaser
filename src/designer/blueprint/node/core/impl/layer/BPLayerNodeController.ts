@@ -23,7 +23,8 @@ export default class BPLayerNodeController extends AbstractBPNodeController<Laye
 
     execute(executeInfo: ExecuteInfoType, executor: BPExecutor, params: any): void {
         const {nodeId, apId, anchorType} = executeInfo;
-        if (anchorType === AnchorPointType.INPUT) {
+         console.log(executeInfo,apId,anchorType,'execute')
+         if (anchorType === AnchorPointType.INPUT) {
             //输入点，执行动作
             //1.获取当前组件的控制器实例
             const {compController, layerConfigs} = layerManager;
