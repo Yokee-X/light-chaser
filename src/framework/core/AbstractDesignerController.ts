@@ -61,14 +61,12 @@ abstract class AbstractDesignerController<I = any, C = any> extends AbstractCont
                             this.container!.appendChild(this.errMsgDom);
                         }
                     }
-                })
-                .finally(() => {
-                    this.changeLoading(false);
-                });
-        };
-        if (autoFlush) this.interval = setInterval(() => request(), frequency * 1000);
-        else request();
-    };
+            });
+        }
+        request();
+        if (autoFlush)
+            this.interval = setInterval(() => request(), frequency * 1000);
+    }
 
     private doDatabase = (config: IDatabase) => {
         const { sql, targetDb, filter, frequency, autoFlush } = config;
@@ -98,11 +96,11 @@ abstract class AbstractDesignerController<I = any, C = any> extends AbstractCont
                     }
                 }
             });
-        };
-
-        if (autoFlush) this.interval = setInterval(() => request(), (frequency || 5) * 1000);
-        else request();
-    };
+        }
+        request();
+        if (autoFlush)
+            this.interval = setInterval(() => request(), (frequency || 5) * 1000);
+    }
 
     /**
      * 加载组件数据，用于在预览（展示）模式下渲染完组件后根据当前组件的数据配置自动加载并更新组件数组。
